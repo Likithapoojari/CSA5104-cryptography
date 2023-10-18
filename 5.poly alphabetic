@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+char vigenereEncrypt(char plaintext, char key) {
+    if (isalpha(plaintext)) {
+        char offset = isupper(plaintext) ? 'A' : 'a';
+        char k = isupper(key) ? key - 'A' : key - 'a';
+        return ((plaintext - offset + k) % 26) + offset;
+    }
+    return plaintext; 
+}
+void vigenereEncryptMessage(char *message, const char *key) {
+    int messageLen = strlen(message);
+    int keyLen = strlen(key);   
+    for (int i = 0; i < messageLen; i++) {
+        message[i] = vigenereEncrypt(message[i], key[i % keyLen]);
+    }
+}
+int main() {
+    char message[1000];
+    char key[100];
+    printf("Enter the plaintext message: ");
+    fgets(message, sizeof(message), stdin);
+    message[strlen(message) - 1] = '\0';  
+    printf("Enter the Vigenère key: ");
+    scanf("%s", key);
+    vigenereEncryptMessage(message, key);
+    printf("Encrypted message: %s\n", message);
+
+    return 0;
+}
